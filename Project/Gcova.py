@@ -17,22 +17,26 @@ for lon, lat in gpsList:
 
 # Deduplicate Places(-gu)
 placeList = list(set(placeList))
-#place_str = ','.join(s for s in placeList)
+
+# List -> Str
 place_str = ','.join(map(str, placeList))
 
+# Load file 'Crawling.csv'
 df = pd.read_csv('./module/Crawling.csv')
-place_time = df['Update Time'][0].replace('(','')
-place_time = place_time.replace(')','')
+place_time = df['Update Time'][0].strip('()')
 
+# Sum of cumulative people and today's people
 total_people, today_people = 0,0
 for i in placeList:
-    total_people += int(df[i][0].replace(',',''))
-    today_people += int(df[i][1].replace(',',''))
+    total_people += int(df[i][0].replace(',', ''))
+    today_people += int(df[i][1].replace(',', ''))
 
-#total_people = format(total_people, ',d')
-#today_people = format(today_people, ',d')
+# Add commas every 3 digit
+total_people = format(total_people, ',d')
+today_people = format(today_people, ',d')
 
+# Output
 print(df)
-print('{0}번 버스가 지나는 자치구는 {1}입니다.' .format(bus_number,place_str))
+print('{0}번 버스가 지나는 자치구는 {1}입니다.' .format(bus_number, place_str))
 print('현재 코로나 업데이트는 {0}이며,' .format(place_time))
-print('해당 자치구의 \t누적 확진자수는 {0:,}명,\n \t\t신규 확진자수는 {1:,}명입니다.' .format(total_people, today_people))
+print('해당 자치구의 \t누적 확진자수는 {0}명,\n \t\t신규 확진자수는 {1}명입니다.' .format(total_people.rjust(8), today_people.rjust(8)))
