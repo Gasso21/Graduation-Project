@@ -20,6 +20,7 @@ def getBusRouteList(strSrch):
     with urlopen(request) as response:
         res_xml = ET.parse(response)
 
+
     # Select text and make list
     root = res_xml.getroot()
     msgBody    = root.find("msgBody")
